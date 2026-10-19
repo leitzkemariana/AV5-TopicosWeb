@@ -6,6 +6,13 @@ Dentro dos arquivos das rotas existem demonstrações sobre como executar as rot
 
 ```curl localhost:5000```
 
+## Criar tabelas do banco de dados
+
+Depois de iniciar o backend, acesse `http://localhost:5000/criar_banco` uma vez
+para criar as tabelas que ainda não existem e incluir o usuário administrador
+inicial, caso ele ainda não esteja cadastrado. Essa operação não apaga os dados
+existentes.
+
 ## Listagem de dados
 
 <a href="https://gitlab.com/hvescovi/progs/-/blob/main/web/react_with_next/06-complete-app/back-python/src/routes/pessoa.py?ref_type=heads#L15">link</a>

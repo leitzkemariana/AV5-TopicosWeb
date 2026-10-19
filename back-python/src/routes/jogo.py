@@ -21,14 +21,15 @@ def criar_jogo():
         or not dados.get("nome")
         or not dados.get("ano_lancamento")
         or not dados.get("genero")
-        or not dados.get("classificao")
+        or dados.get("classificacao") is None
+        or dados.get("classificacao") == ""
         or not dados.get("desenvolvedor")
     ):
         return (
             jsonify(
                 {
                     "resultado": "erro",
-                    "detalhes": "Nome, ano_lancamento, genero, classificao e desenvolvedor são obrigatórios",
+                    "detalhes": "Nome, ano_lancamento, genero, classificacao e desenvolvedor são obrigatórios",
                 }
             ),
             400,

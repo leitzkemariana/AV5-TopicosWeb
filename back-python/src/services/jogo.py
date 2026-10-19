@@ -7,7 +7,7 @@ def criar_jogo(data):
         nome=data["nome"],
         ano_lancamento=data["ano_lancamento"],
         genero=data["genero"],
-        classificao=data["classificao"],
+        classificacao=data["classificacao"],
         desenvolvedor=data.get("desenvolvedor"),
     )
 
@@ -17,7 +17,7 @@ def criar_jogo(data):
     return jogo
 
 
-def retornar_jogo():
+def retornar_jogos():
     jogos = Jogo.query.all()
 
     return jogos

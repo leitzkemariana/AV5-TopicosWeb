@@ -26,20 +26,21 @@ def auxiliar_criar_bd():
     # é necessário "entrar" em um contexto
     with app.app_context():
         # criar as tabelas (na primeira execução)
-        # db.create_all()
+        db.create_all()
 
-        # popular o banco de dados com uma pessoa inicial
-        pessoa_inicial = Pessoa(
-            nome="Administrador",
-            email="admin@admin",
-            login="admin",
-            senha=bcrypt.hashpw("admin123".encode("utf-8"), bcrypt.gensalt()).decode(
-                "utf-8"
-            ),
-            telefone="(00) 0 0000-0000",
-        )
-        db.session.add(pessoa_inicial)
-        db.session.commit()
+        # popular o banco de dados com uma pessoa inicial, se necessário
+        if not Pessoa.query.filter_by(login="admin").first():
+            pessoa_inicial = Pessoa(
+                nome="Administrador",
+                email="admin@admin",
+                login="admin",
+                senha=bcrypt.hashpw(
+                    "admin123".encode("utf-8"), bcrypt.gensalt()
+                ).decode("utf-8"),
+                telefone="(00) 0 0000-0000",
+            )
+            db.session.add(pessoa_inicial)
+            db.session.commit()
 
 
 # uma rota para criar o banco de dados, caso necessário
