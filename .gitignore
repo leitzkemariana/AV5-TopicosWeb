@@ -1,0 +1,34 @@
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Python
+/back-python/.venv/
+/back-python/venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+/back-python/build/
+/back-python/dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node.js and Next.js
+/front-react-next/node_modules/
+/front-react-next/.next/
+/front-react-next/out/
+/front-react-next/build/
+/front-react-next/coverage/
+/front-react-next/next-env.d.ts
+/front-react-next/*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Local tooling and operating-system files
+.DS_Store
+Thumbs.db

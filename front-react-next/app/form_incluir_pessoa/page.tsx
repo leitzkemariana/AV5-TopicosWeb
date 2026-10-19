@@ -1,10 +1,9 @@
-'use client';
+"use client";
 
-import { FormEvent, useEffect, useState,  } from 'react';
+import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function FormIncluirPessoa() {
-
   const [nome, setNome] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [telefone, setTelefone] = useState<string>("");
@@ -18,7 +17,7 @@ export default function FormIncluirPessoa() {
   const [token, setToken] = useState<string | null>(null);
 
   const router = useRouter();
-  
+
   // obtém da variável de ambiente o endereço do backend (API)
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -32,9 +31,7 @@ export default function FormIncluirPessoa() {
     }
     // persiste o token
     setToken(savedToken);
-  
   }, [router]);
-
 
   useEffect(() => {
     // se não houver mensagem, encerra
@@ -45,7 +42,6 @@ export default function FormIncluirPessoa() {
       setMessage("");
     }, 5000);
     return () => clearTimeout(timer);
-
   }, [message]);
 
   useEffect(() => {
@@ -65,14 +61,13 @@ export default function FormIncluirPessoa() {
     setLoading(true);
 
     try {
-
-      const resposta = await fetch(apiUrl + '/pessoa', {
-        method: 'POST',
+      const resposta = await fetch(apiUrl + "/pessoa", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ nome, email, telefone, login, senha })
+        body: JSON.stringify({ nome, email, telefone, login, senha }),
       });
 
       switch (resposta.status) {
@@ -80,8 +75,11 @@ export default function FormIncluirPessoa() {
         case 201:
           setMessage("Pessoa cadastrada com sucesso!");
           // limpa os campos
-          setNome(""); setEmail(""); setTelefone("");
-          setLogin(""); setSenha("");
+          setNome("");
+          setEmail("");
+          setTelefone("");
+          setLogin("");
+          setSenha("");
           break;
         case 400:
           setError("Invalid data.");
@@ -102,83 +100,89 @@ export default function FormIncluirPessoa() {
           const resultado = await resposta.json();
           setError(resultado.message || "Um erro inesperado ocorreu.");
       }
-  } catch (error) {
-    console.log('error', error);
-    setError("Não foi possível conectar-se ao backend");
-  } finally {
-    setLoading(false);
+    } catch (error) {
+      console.log("error", error);
+      setError("Não foi possível conectar-se ao backend");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // se não houver token, encerra a página
+  if (!token) {
+    return null;
   }
-}
 
-// se não houver token, encerra a página
-if (!token) {
-  return null;
-}
+  return (
+    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+        <h1 className="text-4xl font-bold tracking-tight text-gray-900 mb-4">
+          Cadastrar Pessoa
+        </h1>
 
+        {message && <p className="text-green-600 font-medium">{message}</p>}
 
-return (
-  <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-    <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+        {error && <p className="text-red-600 font-medium">{error}</p>}
 
-      <h1
-      className="text-4xl font-bold tracking-tight text-gray-900 mb-4"
-      >Cadastrar Pessoa</h1>
-
-      {message && (
-        <p className="text-green-600 font-medium">
-          {message}
-        </p>
-      )}
-
-      {error && (
-        <p className="text-red-600 font-medium">
-          {error}
-        </p>
-      )}
-
-      <form className="flex flex-col gap-4 w-full" onSubmit={enviar}>
-
-        <input type="text" name="nome"
-          placeholder="Nome" value={nome}
-          onChange={(e) => setNome(e.target.value)}
-          className="rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
-          required />
-
-        <input type="email" name="email" placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required 
-          className="rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+        <form className="flex flex-col gap-4 w-full" onSubmit={enviar}>
+          <input
+            type="text"
+            name="nome"
+            placeholder="Nome"
+            value={nome}
+            onChange={e => setNome(e.target.value)}
+            className="rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+            required
           />
 
-        <input type="text" name="telefone" placeholder="Telefone"
-          value={telefone}
-          onChange={(e) => setTelefone(e.target.value)} 
-          className="rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
+            className="rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
           />
 
-        <input type="text" name="login" placeholder="Login"
-          value={login}
-          onChange={(e) => setLogin(e.target.value)}
-          className="rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
-          required />
+          <input
+            type="text"
+            name="telefone"
+            placeholder="Telefone"
+            value={telefone}
+            onChange={e => setTelefone(e.target.value)}
+            className="rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+          />
 
-        <input type="password" name="senha" placeholder="Senha"
-          value={senha}
-          onChange={(e) => setSenha(e.target.value)}
-          className="rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
-          required />
+          <input
+            type="text"
+            name="login"
+            placeholder="Login"
+            value={login}
+            onChange={e => setLogin(e.target.value)}
+            className="rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+            required
+          />
 
-        <button type="submit"
-          disabled={loading}
-          className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {loading ? "Cadastrando..." : "Cadastrar"}
-        </button>
+          <input
+            type="password"
+            name="senha"
+            placeholder="Senha"
+            value={senha}
+            onChange={e => setSenha(e.target.value)}
+            className="rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+            required
+          />
 
-      </form>
-
-    </main>
-  </div>
-);
+          <button
+            type="submit"
+            disabled={loading}
+            className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {loading ? "Cadastrando..." : "Cadastrar"}
+          </button>
+        </form>
+      </main>
+    </div>
+  );
 }

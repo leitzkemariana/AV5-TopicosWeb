@@ -18,18 +18,18 @@ export default function Dashboard() {
     fetch("http://localhost:5000/api/dashboard", {
       method: "GET",
       headers: {
-        "Authorization": `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
-    .then((res) => {
-      if (!res.ok) throw new Error("Unauthorized access");
-      return res.json();
-    })
-    .then((data) => setMessage(data.message))
-    .catch(() => {
-      localStorage.removeItem("token"); // clear invalid token
-      router.push("/login");
-    });
+      .then(res => {
+        if (!res.ok) throw new Error("Unauthorized access");
+        return res.json();
+      })
+      .then(data => setMessage(data.message))
+      .catch(() => {
+        localStorage.removeItem("token"); // clear invalid token
+        router.push("/login");
+      });
   }, [router]);
 
   const handleLogout = () => {
@@ -41,7 +41,10 @@ export default function Dashboard() {
     <div style={{ textAlign: "center", marginTop: "50px" }}>
       <h1>Dashboard</h1>
       <p>{message}</p>
-      <button onClick={handleLogout} style={{ padding: "8px 16px", marginTop: "20px" }}>
+      <button
+        onClick={handleLogout}
+        style={{ padding: "8px 16px", marginTop: "20px" }}
+      >
         Log Out
       </button>
     </div>
